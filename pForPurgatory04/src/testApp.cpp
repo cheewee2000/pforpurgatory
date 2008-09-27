@@ -34,7 +34,8 @@ void testApp::setup(){
 	}
 	
 	helveticaSM.loadFont("Helvetica Neue.ttf", 7);
-	
+	timer=0;
+	maxTime=30*60*3;//frames per seconds per minutes
 }
 
 //--------------------------------------------------------------
@@ -75,6 +76,8 @@ void testApp::update(){
 	}
 	
 	//printf("%f \n", ofGetFrameRate());
+	
+	timer++;
 }
 
 //--------------------------------------------------------------
@@ -331,10 +334,14 @@ void testApp::pBackground()
 {
 	for (int j=0; j<ofGetHeight(); j++)
 	{			
-		pSetHSV(200,1,(float)(j)/(float)ofGetHeight());
+		pSetHSV(200,1,(float)(j)/( (float)ofGetHeight()-timer) );
 		//pSetHSV(360.0*(float)(j)/(float)ofGetHeight(),1,1);
 		ofLine(0,j,ofGetWidth(),j);
 	}		
+	
+	
+	
+	
 }
 
 float testApp::smooth(float raw, float smoothness, float smoothedVal){
