@@ -61,6 +61,9 @@ class testApp : public ofSimpleApp{
 	#define nBots 100
 	Bots bots[nBots];
 	
+	int timer;
+	int maxTime;
+	
 };
 
 #endif
