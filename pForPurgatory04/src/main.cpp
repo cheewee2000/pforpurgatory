@@ -3,7 +3,8 @@
 
 //========================================================================
 int main( ){
-//testestesteeessst
+//test commit
+	
 	
 	//ofSetupOpenGL(1024,768, OF_FULLSCREEN);			// <-------- setup the GL context
 	//ofSetupOpenGL(1440,136, OF_WINDOW);			// <-------- setup the GL context
