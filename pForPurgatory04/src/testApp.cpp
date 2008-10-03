@@ -4,25 +4,6 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	
-	
-#ifdef _USE_LIVE_VIDEO
-	vidGrabber.setVerbose(true);
-	vidGrabber.initGrabber(320,240);
-#else
-	vidPlayer.loadMovie("fingers.mov");
-	vidPlayer.play();
-#endif
-	
-    colorImg.allocate(320,240);
-	grayImage.allocate(320,240);
-	grayBg.allocate(320,240);
-	grayDiff.allocate(320,240);
-	
-	
-	
-	bLearnBakground = true;
-	threshold = 80;
-	
 	//set intial anchor y positions
 	for ( int h=0; h<nAnchors; h++) //for each anchor point
 	{
@@ -46,37 +27,7 @@ void testApp::update(){
 	
     bool bNewFrame = false;
 	
-#ifdef _USE_LIVE_VIDEO
-	vidGrabber.grabFrame();
-	bNewFrame = vidGrabber.isFrameNew();
-#else
-	vidPlayer.idleMovie();
-	bNewFrame = vidPlayer.isFrameNew();
-#endif
-	
-	if (bNewFrame){
-		
-#ifdef _USE_LIVE_VIDEO
-		colorImg.setFromPixels(vidGrabber.getPixels(), 320,240);
-#else
-		colorImg.setFromPixels(vidPlayer.getPixels(), 320,240);
-#endif
-		
-        grayImage = colorImg;
-		if (bLearnBakground == true){
-			grayBg = grayImage;		// the = sign copys the pixels from grayImage into grayBg (operator overloading)
-			bLearnBakground = false;
-		}
-		
-		// take the abs value of the difference between background and incoming and then threshold:
-		grayDiff.absDiff(grayBg, grayImage);
-		grayDiff.threshold(threshold);
-		
-		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
-		// also, find holes is set to true so we will get interior contours as well....
-		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, true);	// find holes
-	}
-	
+
 	//printf("%f \n", ofGetFrameRate());
 	
 	timer++;
@@ -87,74 +38,8 @@ void testApp::draw(){
 	
 	pBackground();
 	
-	// draw the incoming, the grayscale, the bg and the thresholded difference
-	//ofSetColor(255,255,255);
-	//colorImg.draw(20,20);	
-	//grayImage.draw(360,20);
-	//grayBg.draw(20,280);
-	
-	//grayDiff.draw(0,ofGetHeight()-240);
 	float contourScale = ofGetWidth()/320.0;	
-	
-	/*
-	 
-	 //contour finder
-	 // ---------------------------- draw the bounding rectangle
-	 ofSetColor(105,105,105);
-	 glPushMatrix();
-	 //glTranslatef( 0, 0, 0.0 );
-	 
-	 ofNoFill();
-	 for( int i=0; i<contourFinder.blobs.size(); i++ ) {
-	 ofRect( ofGetWidth() - contourFinder.blobs[i].boundingRect.x*contourScale, contourFinder.blobs[i].boundingRect.y*contourScale,
-	 - contourFinder.blobs[i].boundingRect.width*contourScale, contourFinder.blobs[i].boundingRect.height*contourScale );
-	 }
-	 */
-	
-	/*
-	 // ---------------------------- draw the blobs
-	 //ofSetColor(255,20,0);
-	 ofSetColor(98,98,98);
-	 ofFill();
-	 for( int i=0; i<contourFinder.blobs.size(); i++ ) {
-	 ofBeginShape();
-	 for( int j=0; j<contourFinder.blobs[i].nPts; j++ ) {
-	 ofVertex(ofGetWidth() - contourFinder.blobs[i].pts[j].x*contourScale, contourFinder.blobs[i].pts[j].y*contourScale );
-	 }
-	 ofEndShape();
-	 }
-	 glPopMatrix();
-	 */
-	
-	//find peaks and valleys
-	
-	/*
-	 //blob detection
-	 for ( int h=0; h<nAnchors; h++) //for each anchor point
-	{
-		curveAnchorX[h]=ofGetWidth()/(float)(nAnchors-1)*h;
-		
-		for( int i=0; i<contourFinder.blobs.size(); i++ ) //check each blob 
-		{
-			for( int j=0; j<contourFinder.blobs[i].nPts; j++ ) //check all points in blob
-			{
-				float contX=ofGetWidth() - contourFinder.blobs[i].pts[j].x*contourScale; 
-				if (h>=0)
-				{
-					if (contX>=curveAnchorX[h]-ofGetWidth()/nAnchors/2.0 && contX<=curveAnchorX[h]+ofGetWidth()/nAnchors/2.0) //if blob x position is within anchor point
-					{
-						float contY=contourFinder.blobs[i].pts[j].y*contourScale;
-						if(contY < curveAnchorY[h]) //find the highest point
-						{
-							curveAnchorY[h]=smooth(contY,.99, curveAnchorY[h]);  //smooth changes from previous reading
-						}
-						
-					}
-				}
-			}
-		}
-	}
-	 */
+
 	
 	//place curve anchor X positions
 	for ( int h=0; h<nAnchors; h++) //for each anchor point
@@ -354,7 +239,7 @@ void testApp::pBackground()
 	{	
 		float linePos=(float)(j)/(float)ofGetHeight();
 		//dawn to noon
-		pSetHSV(16,1,.5);
+		pSetHSV(16+linePos*100,1,.5);
 		
 		//noon to dusk
 		//pSetHSV(200,1,(float)(j)/( (float)ofGetHeight()-timer) );
@@ -382,7 +267,7 @@ float testApp::smooth(float raw, float smoothness, float smoothedVal){
 
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){ 
-	int rate=90;
+	int rate=ofRandom(130,600);
 	switch (key){
 		case ' ':
 			bLearnBakground = true;
