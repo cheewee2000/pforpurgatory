@@ -19,8 +19,8 @@ void Bots::setup()
 	vx=0;
 	vy=0;
 	//size=3;
-	maxSize=6.0;
-	size=ofRandom(1, 3);
+	maxSize=24.0;
+	size=ofRandom(6, 18);
 	maxDepth=size*2.0;
 	g=1;
 	//gmin=1;

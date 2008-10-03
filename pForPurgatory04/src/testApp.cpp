@@ -18,6 +18,8 @@ void testApp::setup(){
 	grayBg.allocate(320,240);
 	grayDiff.allocate(320,240);
 	
+	
+	
 	bLearnBakground = true;
 	threshold = 80;
 	
@@ -126,7 +128,9 @@ void testApp::draw(){
 	
 	//find peaks and valleys
 	
-	for ( int h=0; h<nAnchors; h++) //for each anchor point
+	/*
+	 //blob detection
+	 for ( int h=0; h<nAnchors; h++) //for each anchor point
 	{
 		curveAnchorX[h]=ofGetWidth()/(float)(nAnchors-1)*h;
 		
@@ -150,15 +154,27 @@ void testApp::draw(){
 			}
 		}
 	}
+	 */
+	
+	//place curve anchor X positions
+	for ( int h=0; h<nAnchors; h++) //for each anchor point
+	{
+		curveAnchorX[h]=ofGetWidth()/(float)(nAnchors-1)*h;
+	}
+	
 	
 	//draw anchors
 	float horizon=ofGetHeight()-50;
 	
 	//ofSetColor(0,0,0);
+	
+	//set curve anchor Y positions
 	for ( int h=0; h<nAnchors; h++)
 	{
+		//ofSetColor(0,0,0);
 		//ofEllipse(curveAnchorX[h], curveAnchorY[h], 4,4);
-		curveAnchorY[h]=smooth(ofGetHeight(),.95, curveAnchorY[h]);
+		curveAnchorY[h]=smooth(ofGetHeight(),.995, curveAnchorY[h]);
+		
 		if(curveAnchorY[h]>horizon) curveAnchorY[h]=horizon;
 		
 	}
@@ -332,9 +348,16 @@ Bots  testApp::pContourCheck(float x, float y, Bots b){
 
 void testApp::pBackground()
 {
+	
+	
 	for (int j=0; j<ofGetHeight(); j++)
-	{			
-		pSetHSV(200,1,(float)(j)/( (float)ofGetHeight()-timer) );
+	{	
+		float linePos=(float)(j)/(float)ofGetHeight();
+		//dawn to noon
+		pSetHSV(16,1,.5);
+		
+		//noon to dusk
+		//pSetHSV(200,1,(float)(j)/( (float)ofGetHeight()-timer) );
 		//pSetHSV(360.0*(float)(j)/(float)ofGetHeight(),1,1);
 		ofLine(0,j,ofGetWidth(),j);
 	}		
@@ -359,7 +382,7 @@ float testApp::smooth(float raw, float smoothness, float smoothedVal){
 
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){ 
-	
+	int rate=90;
 	switch (key){
 		case ' ':
 			bLearnBakground = true;
@@ -372,6 +395,62 @@ void testApp::keyPressed  (int key){
 			threshold --;
 			if (threshold < 0) threshold = 0;
 			break;
+			
+			
+		case 'q':
+			curveAnchorY[0] -=rate;
+			break;	
+		case 'a':
+			curveAnchorY[0] +=rate;
+			break;	
+		case 'w':
+			curveAnchorY[1] -=rate;
+			break;	
+		case 's':
+			curveAnchorY[1] +=rate;
+			break;	
+		case 'e':
+			curveAnchorY[2] -=rate;
+			break;	
+		case 'd':
+			curveAnchorY[2] +=rate;
+			break;
+		case 'r':
+			curveAnchorY[3] -=rate;
+			break;	
+		case 'f':
+			curveAnchorY[3] +=rate;
+			break;		
+		case 't':
+			curveAnchorY[4] -=rate;
+			break;	
+		case 'g':
+			curveAnchorY[4] +=rate;
+			break;		
+		case 'y':
+			curveAnchorY[5] -=rate;
+			break;	
+		case 'h':
+			curveAnchorY[5] +=rate;
+			break;	
+		case 'u':
+			curveAnchorY[6] -=rate;
+			break;	
+		case 'j':
+			curveAnchorY[6] +=rate;
+			break;	
+		case 'i':
+			curveAnchorY[7] -=rate;
+			break;	
+		case 'k':
+			curveAnchorY[7] +=rate;
+			break;	
+		case 'o':
+			curveAnchorY[8] -=rate;
+			break;	
+		case 'l':
+			curveAnchorY[8] +=rate;
+			break;		
 	}
 }
 

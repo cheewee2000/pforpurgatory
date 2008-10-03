@@ -44,7 +44,7 @@ class testApp : public ofSimpleApp{
 		
 		
 		//p vars
-		#define nAnchors 20
+		#define nAnchors 9
 
 		float curveAnchorX[nAnchors];
 		float curveAnchorY[nAnchors];
