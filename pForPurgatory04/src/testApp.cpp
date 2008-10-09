@@ -24,10 +24,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	//ofBackground(100,100,100);
-	
     bool bNewFrame = false;
-	
-
 	//printf("%f \n", ofGetFrameRate());
 	
 	timer++;
@@ -37,10 +34,9 @@ void testApp::update(){
 void testApp::draw(){
 	
 	pBackground();
-	
-	float contourScale = ofGetWidth()/320.0;	
+	//saveSettings();
+	//float contourScale = ofGetWidth()/320.0;	
 
-	
 	//place curve anchor X positions
 	for ( int h=0; h<nAnchors; h++) //for each anchor point
 	{
@@ -59,9 +55,7 @@ void testApp::draw(){
 		//ofSetColor(0,0,0);
 		//ofEllipse(curveAnchorX[h], curveAnchorY[h], 4,4);
 		curveAnchorY[h]=smooth(ofGetHeight(),.995, curveAnchorY[h]);
-		
 		if(curveAnchorY[h]>horizon) curveAnchorY[h]=horizon;
-		
 	}
 	
 	//draw hills and valleys
@@ -69,6 +63,7 @@ void testApp::draw(){
 	pSetHSV(30,.9,.3);
 	
 	ofBeginShape();
+	
 	ofCurveVertex(0,horizon);
 	ofCurveVertex(0,ofGetHeight());
 	for ( int i=0; i<nAnchors; i++)
@@ -82,14 +77,16 @@ void testApp::draw(){
 	ofEndShape();
 	
 	//update bot positions
-	
 	for ( int i=0; i<nBots; i++) //for each bot point
 	{
 		bots[i].update();
 		
 		//check bots y position to contour
 		bots[i]=pContourCheck(0,ofGetHeight(), bots[i]);
-		for ( int j=0; j<nAnchors; j++) bots[i]=pContourCheck(curveAnchorX[j],curveAnchorY[j], bots[i]);
+		for ( int j=0; j<nAnchors; j++){
+			bots[i]=pContourCheck(curveAnchorX[j],curveAnchorY[j], bots[i]);
+		}
+		
 		bots[i]=pContourCheck(ofGetWidth(),ofGetHeight(), bots[i]);
 		
 		
@@ -98,8 +95,7 @@ void testApp::draw(){
 		{
 			for (int j=0; j<nBots; j++)
 			{
-				
-				if(bots[i].x<bots[j].x+3 && bots[i].x>bots[j].x-3)
+				if(bots[i].x<bots[j].x+3 && bots[i].x>bots[j].x-3)//Chech bot position agains dead bot position
 				{
 					if(bots[j].isTree) 
 					{
@@ -124,11 +120,7 @@ void testApp::draw(){
 					{
 						bots[i].velocity=bots[i].maxSize/bots[i].size*bots[i].dir;						
 					}
-				}
-				
-				
-				
-				
+				}	
 			}
 		}
 		
@@ -149,8 +141,6 @@ void testApp::draw(){
 		 */
 	}
 	
-	
-	
 	/*	
 	 // onscreen text
 	 ofSetColor(150,150,150);
@@ -159,6 +149,30 @@ void testApp::draw(){
 	 ofDrawBitmapString(reportStr, ofGetWidth()-300, ofGetHeight()-100);
 	 */
 }
+
+
+
+void testApp::saveSettings() {
+    ofstream fout;
+    fout.open( ofToDataPath("text.txt").c_str() );
+	
+    fout << bots[0].x << " " << bots[0].y << endl;
+	
+    fout.close();
+}
+
+
+
+void testApp::loadSettings() {
+    ifstream fin;
+    fin.open( ofToDataPath("text.txt").c_str() );
+	
+    fin >> bots[0].x >> bots[0].y;
+	
+    fin.close();
+} 
+
+
 
 
 //---------------------------- and for curve vertexes, since we need 4 to make a curve
@@ -184,7 +198,7 @@ Bots  testApp::pContourCheck(float x, float y, Bots b){
  		float x3 = pCurveVertices[startPos + 3][0];
 	   	float y3 = pCurveVertices[startPos + 3][1];
 		
- 		int resolution = 50;
+ 		int resolution = 20	0;
 		
 		float t,t2,t3;
 		float x,y;
@@ -217,13 +231,10 @@ Bots  testApp::pContourCheck(float x, float y, Bots b){
 					b.shiftPos(dx,dy);
 					b.fallingSetFalse();
 				}
-				
 				else //if(b.y<y-5)
 				{
 					b.fallingSetTrue();
 				}
-				
-				
 			}
 		}
  	}
@@ -233,8 +244,6 @@ Bots  testApp::pContourCheck(float x, float y, Bots b){
 
 void testApp::pBackground()
 {
-	
-	
 	for (int j=0; j<ofGetHeight(); j++)
 	{	
 		float linePos=(float)(j)/(float)ofGetHeight();
@@ -246,10 +255,6 @@ void testApp::pBackground()
 		//pSetHSV(360.0*(float)(j)/(float)ofGetHeight(),1,1);
 		ofLine(0,j,ofGetWidth(),j);
 	}		
-	
-	
-	
-	
 }
 
 float testApp::smooth(float raw, float smoothness, float smoothedVal){
@@ -269,18 +274,7 @@ float testApp::smooth(float raw, float smoothness, float smoothedVal){
 void testApp::keyPressed  (int key){ 
 	int rate=ofRandom(130,600);
 	switch (key){
-		case ' ':
-			bLearnBakground = true;
-			break;
-		case '+':
-			threshold ++;
-			if (threshold > 255) threshold = 255;
-			break;
-			case '-':
-			threshold --;
-			if (threshold < 0) threshold = 0;
-			break;
-			
+
 			
 		case 'q':
 			curveAnchorY[0] -=rate;

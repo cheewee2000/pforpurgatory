@@ -2,7 +2,7 @@
 #define _TEST_APP
 
 #include "ofMain.h"
-
+//#include "Box2D.h"
 #define OF_ADDON_USING_OFXOPENCV
 
 #include "ofAddons.h"
@@ -10,6 +10,7 @@
 #define _USE_LIVE_VIDEO		// uncomment this to use a live camera
 								// otherwise, we'll use a movie file
 #include "bots.h"
+#include <fstream> 
 
 class testApp : public ofSimpleApp{
 
@@ -25,23 +26,6 @@ class testApp : public ofSimpleApp{
 		void mousePressed(int x, int y, int button);
 		void mouseReleased();
 
-        #ifdef _USE_LIVE_VIDEO
-		  ofVideoGrabber 		vidGrabber;
-		#else
-		  ofVideoPlayer 		vidPlayer;
-		#endif
-        
-        ofxCvColorImage		colorImg;
-        
-        ofxCvGrayscaleImage 	grayImage;
-		ofxCvGrayscaleImage 	grayBg;
-		ofxCvGrayscaleImage 	grayDiff;
-		
-        ofxCvContourFinder 	contourFinder;
-
-		int 				threshold;
-		bool				bLearnBakground;
-		
 		
 		//p vars
 		#define nAnchors 9
@@ -55,7 +39,8 @@ class testApp : public ofSimpleApp{
 		float smooth(float raw, float smoothness, float smoothedVal);
 		void pBackground();
 	Bots  pContourCheck(float x, float y, Bots b);
-
+	void saveSettings();
+	void loadSettings();
 	
 	//bots
 	#define nBots 100
