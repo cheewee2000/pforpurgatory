@@ -53,7 +53,7 @@ void Bots::setup(string botNum, string botPrefs, string botSize)
 	velocity=0;
 	
 	vmin=0;
-	vmax=3.0;
+	vmax=3.0;//speed tested at iac
 	
 	falling=true;
 	downhill=false;
@@ -114,9 +114,6 @@ void Bots::update()
 		leftCount=1;
 		curImage++;
 	}
-	
-	//leftRightCount
-	
 	
 	//normal running around
 	if(alive && eating==false)
