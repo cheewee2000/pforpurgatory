@@ -21,13 +21,12 @@ void Bots::setup(string botNum, string botPrefs, string botSize)
 	else if(botSize=="xlarge")size=ofRandom(150, 200);
 	else if(botSize=="xxlarge")	size=ofRandom(200, 250);
 	//else size=ofRandom(50, 80);
-	else size=ofRandom(20, 150);
+	else size=ofRandom(20, 150);//sizes test at iac
 	maxSize=250.0;	
 	
 	framesPerStep=size/15.0;
 	
 	curImage=ofRandom(0,9);
-
 	
 	x=ofRandom(0,ofGetWidth());
 	y=ofRandom(ofGetHeight()-300,ofGetHeight()-100);
