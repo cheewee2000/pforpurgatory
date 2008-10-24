@@ -266,7 +266,7 @@ Bots  testApp::pContourCheck(float x, float y, Bots b){
 	   	float y3 = pCurveVertices[startPos + 3][1];
 		
 		//int resolution = 100; //100 at home//-------this number if gets bigger makes everybody move right wards		
- 		int resolution =220; //-------this number if gets bigger makes everybody move right wards
+ 		int resolution =220; //iac screen size
 		//int resolution = ofGetWidth() / (nAnchors - 1) / 2;
 		
 		float t,t2,t3;
