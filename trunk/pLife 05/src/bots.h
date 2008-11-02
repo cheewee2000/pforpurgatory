@@ -73,6 +73,8 @@ public:
 	ofImage imageSeq[11];
 	float degrees;
 	float framesPerStep;
+	string state;
+	
 	
 };
 #endif
