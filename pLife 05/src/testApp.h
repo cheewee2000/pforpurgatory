@@ -80,7 +80,7 @@ class testApp : public ofSimpleApp{
 	void pollMysql();
 	
 	//threadedObject	TO;	
-	# define NUMFRAMES 11
+	# define NUMFRAMES 19
 	ofImage runRight[NUMFRAMES];
 	ofImage runLeft[NUMFRAMES];
 
