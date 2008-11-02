@@ -80,10 +80,23 @@ class testApp : public ofSimpleApp{
 	void pollMysql();
 	
 	//threadedObject	TO;	
-	# define NUMFRAMES 19
+	# define NUMFRAMES 19	
 	ofImage runRight[NUMFRAMES];
 	ofImage runLeft[NUMFRAMES];
-
+	# define WALKFRAMES 20
+	ofImage walkRight[WALKFRAMES];
+	ofImage walkLeft[WALKFRAMES];
+	# define JOGFRAMES 19
+	ofImage jogRight[JOGFRAMES];
+	ofImage jogLeft[JOGFRAMES];
+	# define CBOXJOGFRAMES 17
+	ofImage carryboxjogRight[CBOXJOGFRAMES];
+	ofImage carryboxjogLeft[CBOXJOGFRAMES];
+	# define CBOXWALKFRAMES 19
+	ofImage carryboxwalkRight[CBOXWALKFRAMES];
+	ofImage carryboxwalkLeft[CBOXWALKFRAMES];
+	
+	
 	void setupNewBot();
 	float horizon;
 	bool startup;

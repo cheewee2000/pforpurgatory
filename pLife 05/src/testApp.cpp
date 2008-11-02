@@ -23,18 +23,28 @@ void testApp::setup(){
 	ofEnableAlphaBlending();
 	
 	//setup mysql tables , delete and make 10 new dummies
-	connection.getWebPageAsString("http://cwwang.com/bigscreens/setup.php?n=50");
+	connection.getWebPageAsString("http://cwwang.com/bigscreens/setup.php?n=10");
 
 	pollMysql();
 	
-	//load png
-	for (int i = 0; i <= NUMFRAMES; i++){
-		//string myImageName = "anim/left/runLeft" + ofToString(i) + ".png";
-		//animImages[i].loadImage(myImageName);
-		//runRight[i].loadImage("anim/right/runRight" + ofToString(i) + ".png");
-		//runLeft[i].loadImage("anim/walk/left/walkleft-" + ofToString(i) + ".png");
-		runLeft[i].loadImage("anim/walk/left/" + ofToString(i) + ".png");
-		
+	//load pngs
+	for (int i = 0; i <= WALKFRAMES; i++){
+		walkRight[i].loadImage("anim/walk/right/" + ofToString(i) + ".png");
+		walkLeft[i].loadImage("anim/walk/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= JOGFRAMES; i++){
+
+		jogRight[i].loadImage("anim/jog/right/" + ofToString(i) + ".png");
+		jogLeft[i].loadImage("anim/jog/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= CBOXWALKFRAMES; i++){
+
+		carryboxwalkRight[i].loadImage("anim/carryboxwalk/right/" + ofToString(i) + ".png");
+		carryboxwalkLeft[i].loadImage("anim/carryboxwalk/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= CBOXJOGFRAMES; i++){
+		carryboxjogRight[i].loadImage("anim/carryboxjog/right/" + ofToString(i) + ".png");
+		carryboxjogLeft[i].loadImage("anim/carryboxjog/left/" + ofToString(i) + ".png");
 	}
 	
 	
@@ -153,12 +163,22 @@ void testApp::draw(){
 		}
 		
 		if(bots[i].rightCount>0){
-			runRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			if(bots[i].state=="run") runRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			else if(bots[i].state=="walk") walkRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			else if(bots[i].state=="jog") jogRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			else if(bots[i].state=="carryboxjog") carryboxjogRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			else if(bots[i].state=="carryboxwalk") carryboxwalkRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			
 			drawInfo(bots[i].x-bots[i].size, bots[i].y-bots[i].size*1.5, i);
 		}
 		else{
 			
-			runLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0 , bots[i].y-bots[i].size,bots[i].size,bots[i].size,bots[i].degrees+90);
+			if(bots[i].state=="run") runLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			else if(bots[i].state=="walk") walkLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			else if(bots[i].state=="jog") jogLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			else if(bots[i].state=="carryboxjog") carryboxjogLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			else if(bots[i].state=="carryboxwalk") carryboxwalkLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			
 			drawInfo(bots[i].x+bots[i].size, bots[i].y-bots[i].size*1.5, i);
 		}
 		if (bots[i].curImage >= NUMFRAMES ){
