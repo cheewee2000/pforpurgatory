@@ -22,6 +22,7 @@ void Bots::setup(string botNum, string botPrefs, string botSize)
 	else if(botSize=="xxlarge")	size=ofRandom(200, 250);
 	//else size=ofRandom(50, 80);
 	else size=ofRandom(20, 150);//sizes test at iac
+	state="jog";
 	maxSize=250.0;	
 	
 	framesPerStep=size/15.0;
