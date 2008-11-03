@@ -23,8 +23,23 @@ void Bots::setup(string botNum, string botPrefs, string botSize)
 	//else size=ofRandom(50, 80);
 	else size=ofRandom(20, 150);//sizes test at iac
 	
-	state="walk";
-	//state="jog";
+	int st=ofRandom(0,13);
+	if(st==0) state="walk";
+	else if(st==0) state="run";
+	else if(st==1) state="carryboxjog";
+	else if(st==2) state="carryboxwalk";
+	else if(st==3) state="crawl";
+	else if(st==4) state="dragbox";
+	else if(st==5) state="walk";
+	else if(st==6) state="jog";
+	else if(st==7) state="march";
+	else if(st==8) state="monster";
+	else if(st==9) state="pullbox";
+	else if(st==10) state="pushbox";
+	else if(st==11) state="rollcylinder";
+	else if(st==12) state="stoopwalk";
+
+	//state="run";
 	
 	maxSize=250.0;	
 	
@@ -82,11 +97,14 @@ void Bots::setup(string botNum, string botPrefs, string botSize)
 	leftCount=0;
 	rightCount=0;
 	//curImage=0;
+	lastFrame=0;
+	
 }
 
 void Bots::update(float slot[3])
 {
 
+	
 	if (y>=py)
 	{
 		g*=1.04;
@@ -111,13 +129,20 @@ void Bots::update(float slot[3])
 	if(rightCount>framesPerStep)
 	{
 		rightCount=1;
-		curImage++;
+		//curImage++;
 	}
 	if(leftCount>framesPerStep)
 	{
 		leftCount=1;
-		curImage++;
+		//curImage++;
 	}
+	
+	if(ofGetElapsedTimeMillis()-lastFrame>40) {
+		curImage++;
+		lastFrame=ofGetElapsedTimeMillis();
+		
+	}
+	
 	
 	//normal running around
 	if(alive && eating==false)
