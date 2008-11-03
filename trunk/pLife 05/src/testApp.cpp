@@ -33,12 +33,10 @@ void testApp::setup(){
 		walkLeft[i].loadImage("anim/walk/left/" + ofToString(i) + ".png");
 	}
 	for (int i = 0; i <= JOGFRAMES; i++){
-
 		jogRight[i].loadImage("anim/jog/right/" + ofToString(i) + ".png");
 		jogLeft[i].loadImage("anim/jog/left/" + ofToString(i) + ".png");
 	}
 	for (int i = 0; i <= CBOXWALKFRAMES; i++){
-
 		carryboxwalkRight[i].loadImage("anim/carryboxwalk/right/" + ofToString(i) + ".png");
 		carryboxwalkLeft[i].loadImage("anim/carryboxwalk/left/" + ofToString(i) + ".png");
 	}
@@ -46,6 +44,54 @@ void testApp::setup(){
 		carryboxjogRight[i].loadImage("anim/carryboxjog/right/" + ofToString(i) + ".png");
 		carryboxjogLeft[i].loadImage("anim/carryboxjog/left/" + ofToString(i) + ".png");
 	}
+	for (int i = 0; i <= CRAWLFRAMES; i++){
+		crawlRight[i].loadImage("anim/crawl/right/" + ofToString(i) + ".png");
+		crawlLeft[i].loadImage("anim/crawl/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= DRAGBOXFRAMES; i++){
+		dragboxRight[i].loadImage("anim/dragbox/right/" + ofToString(i) + ".png");
+		dragboxLeft[i].loadImage("anim/dragbox/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= FALLFRAMES; i++){
+		fallRight[i].loadImage("anim/fall/right/" + ofToString(i) + ".png");
+		fallLeft[i].loadImage("anim/fall/left/" + ofToString(i) + ".png");
+	}
+	
+	for (int i = 0; i <= MARCHFRAMES; i++){
+		marchRight[i].loadImage("anim/march/right/" + ofToString(i) + ".png");
+		marchLeft[i].loadImage("anim/march/left/" + ofToString(i) + ".png");
+	}
+	/*
+	 for (int i = 0; i <= MONSTERFRAMES; i++){
+		monsterRight[i].loadImage("anim/monster/right/" + ofToString(i) + ".png");
+		monsterLeft[i].loadImage("anim/monster/left/" + ofToString(i) + ".png");
+	}
+	 */
+	for (int i = 0; i <= PULLBOXFRAMES; i++){
+		pullboxRight[i].loadImage("anim/pullbox/right/" + ofToString(i) + ".png");
+		pullboxLeft[i].loadImage("anim/pullbox/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= PUSHBOXFRAMES; i++){
+		pushboxRight[i].loadImage("anim/pushbox/right/" + ofToString(i) + ".png");
+		pushboxLeft[i].loadImage("anim/pushbox/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= ROLLCYLINDERFRAMES; i++){
+		carryboxjogRight[i].loadImage("anim/rollcylinder/right/" + ofToString(i) + ".png");
+		carryboxjogLeft[i].loadImage("anim/rollcylinder/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= RUNFRAMES; i++){
+		runRight[i].loadImage("anim/run/right/" + ofToString(i) + ".png");
+		runLeft[i].loadImage("anim/run/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= SKIPFRAMES; i++){
+		skipRight[i].loadImage("anim/skip/right/" + ofToString(i) + ".png");
+		skipLeft[i].loadImage("anim/skip/left/" + ofToString(i) + ".png");
+	}
+	for (int i = 0; i <= STOOPWALKFRAMES; i++){
+		stoopwalkRight[i].loadImage("anim/stoopwalk/right/" + ofToString(i) + ".png");
+		stoopwalkLeft[i].loadImage("anim/stoopwalk/left/" + ofToString(i) + ".png");
+	}
+	
 	
 	
 }
@@ -159,30 +205,32 @@ void testApp::draw(){
 		
 		int ang=90;
 		if(bots[i].rightCount>0){
-			if(bots[i].state=="run") runRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
-			else if(bots[i].state=="walk") walkRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
-			else if(bots[i].state=="jog") jogRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
-			else if(bots[i].state=="carryboxjog") carryboxjogRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
-			else if(bots[i].state=="carryboxwalk") carryboxwalkRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
-			
-			drawInfo(bots[i].x-bots[i].size, bots[i].y-bots[i].size*1.5, i);
-		}
+			if(bots[i].state=="run") drawAnim(i, RUNFRAMES, runRight, ang);
+			else if(bots[i].state=="walk") drawAnim(i, WALKFRAMES, walkRight, ang);
+			else if(bots[i].state=="jog") drawAnim(i, JOGFRAMES, jogRight, ang);
+			else if(bots[i].state=="carryboxjog") drawAnim(i, CBOXJOGFRAMES, carryboxjogRight, ang);
+			else if(bots[i].state=="carryboxwalk") drawAnim(i, CBOXWALKFRAMES, carryboxwalkRight, ang);
+			}
 		else{
-			
-			if(bots[i].state=="run") runLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
-			else if(bots[i].state=="walk") walkLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
-			else if(bots[i].state=="jog") jogLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
-			else if(bots[i].state=="carryboxjog") carryboxjogLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
-			else if(bots[i].state=="carryboxwalk") carryboxwalkLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
-			
-			drawInfo(bots[i].x+bots[i].size, bots[i].y-bots[i].size*1.5, i);
-		}
-		if (bots[i].curImage >= NUMFRAMES ){
-			bots[i].curImage = 0;
+			ang=-90;
+			if(bots[i].state=="run") drawAnim(i, RUNFRAMES, runLeft, ang);
+			else if(bots[i].state=="walk") drawAnim(i, WALKFRAMES, walkLeft, ang);
+			else if(bots[i].state=="jog") drawAnim(i, JOGFRAMES, jogLeft, ang);
+			else if(bots[i].state=="carryboxjog") drawAnim(i, CBOXJOGFRAMES, carryboxjogLeft, ang);
+			else if(bots[i].state=="carryboxwalk") drawAnim(i, CBOXWALKFRAMES, carryboxwalkLeft, ang);
 		}
 		
 		ofSetColor(255,255,255);
 		bots[i].draw();
+	}
+}
+
+void testApp::drawAnim(int i, int FRAMECOUNT, ofImage imageArray[], int ang){
+	imageArray[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
+	drawInfo(bots[i].x+bots[i].size, bots[i].y-bots[i].size*1.5, i);
+
+	if (bots[i].curImage >= FRAMECOUNT ){
+		bots[i].curImage = 0;
 	}
 }
 
