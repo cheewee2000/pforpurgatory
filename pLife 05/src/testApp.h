@@ -81,10 +81,10 @@ class testApp : public ofSimpleApp{
 	void pollMysql();
 	
 	//threadedObject	TO;	
-	# define NUMFRAMES 19	
-	ofImage runRight[NUMFRAMES];
-	ofImage runLeft[NUMFRAMES];
-	# define WALKFRAMES 20
+	# define RUNFRAMES 14	
+	ofImage runRight[RUNFRAMES];
+	ofImage runLeft[RUNFRAMES];
+	# define WALKFRAMES 18
 	ofImage walkRight[WALKFRAMES];
 	ofImage walkLeft[WALKFRAMES];
 	# define JOGFRAMES 19
@@ -96,6 +96,37 @@ class testApp : public ofSimpleApp{
 	# define CBOXWALKFRAMES 19
 	ofImage carryboxwalkRight[CBOXWALKFRAMES];
 	ofImage carryboxwalkLeft[CBOXWALKFRAMES];
+# define CRAWLFRAMES 29
+	ofImage crawlRight[CRAWLFRAMES];
+	ofImage crawlLeft[CRAWLFRAMES];
+# define DRAGBOXFRAMES 20
+	ofImage dragboxRight[DRAGBOXFRAMES];
+	ofImage dragboxLeft[DRAGBOXFRAMES];
+# define FALLFRAMES 11
+	ofImage fallRight[FALLFRAMES];
+	ofImage fallLeft[FALLFRAMES];
+# define MARCHFRAMES 20
+	ofImage marchRight[MARCHFRAMES];
+	ofImage marchLeft[MARCHFRAMES];
+# define MONSTERFRAMES 31
+	ofImage monsterRight[MONSTERFRAMES];
+	ofImage monsterLeft[MONSTERFRAMES];
+# define PULLBOXFRAMES 19
+	ofImage pullboxRight[PULLBOXFRAMES];
+	ofImage pullboxLeft[PULLBOXFRAMES];
+# define PUSHBOXFRAMES 24
+	ofImage pushboxRight[PUSHBOXFRAMES];
+	ofImage pushboxLeft[PUSHBOXFRAMES];
+# define ROLLCYLINDERFRAMES 23
+	ofImage rollcylinderRight[ROLLCYLINDERFRAMES];
+	ofImage rollcylinderLeft[ROLLCYLINDERFRAMES];
+# define SKIPFRAMES 21
+	ofImage skipRight[SKIPFRAMES];
+	ofImage skipLeft[SKIPFRAMES];
+# define STOOPWALKFRAMES 24
+	ofImage stoopwalkRight[STOOPWALKFRAMES];
+	ofImage stoopwalkLeft[STOOPWALKFRAMES];
+	
 	
 #define resolution 80
 #define slotAmount 640
@@ -109,6 +140,9 @@ class testApp : public ofSimpleApp{
 	bool startup;
 	void drawSection();
 	void drawInfo(int xpos,int ypos, int i);
+	
+	void drawAnim(int i, int FRAMECOUNT, ofImage imageArray[],  int ang);
+		
 };
 
 #endif
