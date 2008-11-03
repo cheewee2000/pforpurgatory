@@ -54,10 +54,12 @@ public:
 	int lifeLength;
 	float maxDepth;
 	
+#define slotAmount 640
+
 	//bots func
 	void setup(string botNum, string botPrefs, string botSize);
 	void draw();
-	void update();	
+	void update(float slot[3]);	
 	void fallingSetFalse();
 	void fallingSetTrue();
 	void die();
@@ -70,10 +72,11 @@ public:
 	int		curImage;
 	int rightCount;
 	int leftCount;
-	ofImage imageSeq[11];
 	float degrees;
 	float framesPerStep;
 	string state;
+	
+
 	
 	
 };

@@ -53,7 +53,8 @@ class testApp : public ofSimpleApp{
 	//p functions
 		float smooth(float raw, float smoothness, float smoothedVal);
 		void pBackground();
-	Bots  pContourCheck(float x, float y, Bots b);
+	void  pContourCheck1(float x, float y);
+	
 	void saveSettings();
 	void loadSettings();
 	
@@ -96,6 +97,12 @@ class testApp : public ofSimpleApp{
 	ofImage carryboxwalkRight[CBOXWALKFRAMES];
 	ofImage carryboxwalkLeft[CBOXWALKFRAMES];
 	
+#define resolution 80
+#define slotAmount 640
+	//slotAmount = (nAnchors - 1) * resolution;
+#define slotWidth 2
+	//slotWidth = ofGetWidth() / slotAmount;
+	float slot[slotAmount][3];
 	
 	void setupNewBot();
 	float horizon;

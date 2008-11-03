@@ -22,7 +22,10 @@ void Bots::setup(string botNum, string botPrefs, string botSize)
 	else if(botSize=="xxlarge")	size=ofRandom(200, 250);
 	//else size=ofRandom(50, 80);
 	else size=ofRandom(20, 150);//sizes test at iac
-	state="jog";
+	
+	state="walk";
+	//state="jog";
+	
 	maxSize=250.0;	
 	
 	framesPerStep=size/15.0;
@@ -81,7 +84,7 @@ void Bots::setup(string botNum, string botPrefs, string botSize)
 	//curImage=0;
 }
 
-void Bots::update()
+void Bots::update(float slot[3])
 {
 
 	if (y>=py)
@@ -126,35 +129,12 @@ void Bots::update()
 		if(fabs(velocity)<vmin) velocity=vmin*dir; 
 		if(fabs(velocity)>vmax) velocity=vmax*dir;
 		
-		//----------To avoid shaking
-		if (velocity>0 && fabs(x-px)<20 )
-		{
-		    if (x<px) x = px + ( px - x );
-		}
+		if(velocity>0)	{ normalAngle = slot[2] + PI / 2.0;}
+		else {normalAngle = slot[2] - PI / 2.0;}
+        vx=velocity*fabs(cos(slot[2]));
 		
-		if (velocity<0 && fabs(x-px)<20 )
-		{
-		    if (x>px) x = px - ( x - px );
-		}
-		
-		//find normal 
-		angle=atan2((py-y),(px-x));
-		//printf("x=%f\ty=%f\tdx=%f\tdy=%f\tangle=%f\t",x,y,px-x,py-y,angle);
-		
-		totalAngle += (angle - pAngle[pAngleNumber%5]);		
-		pAngle[pAngleNumber%5]=angle;
-		pAngleNumber=pAngleNumber%5+1;
-		
-        angle = totalAngle/5;
-		
-		if(vx>0)	normalAngle=angle+PI/2.0;
-		else normalAngle=angle-PI/2.0;
-		
-		degrees=normalAngle/(PI*2)*360.0;
+		degrees=normalAngle/PI*180.0;
 
-		
-		vx=velocity*fabs(cos(angle));
-		
 		//aliveCount++;
 		//------------if(aliveCount % 300 == 0)size+=.3;
 		//------------if(aliveCount>=lifeLength) die();
@@ -227,9 +207,20 @@ void Bots::update()
 	py=y;
 	
 	if (size>maxSize) size=maxSize;
-	else 	if (size<.1) size=0.1;
+	else if (size<.1) size=0.1;
+	
 	if(x>ofGetWidth()+5) x=0;
 	if(x<-5) x=ofGetWidth();
+	
+	//-----------check y position with contour
+	if (y >= slot[1] - 5 + nFeetUnder || graveBound)
+	{
+		float dx = 0;
+		float dy = y - slot[1] - nFeetUnder;
+		shiftPos(dx, dy);
+		fallingSetFalse();
+	}
+	else if (downhill == true) fallingSetTrue();
 	
 }
 
