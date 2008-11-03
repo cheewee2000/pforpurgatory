@@ -103,30 +103,25 @@ void testApp::draw(){
 	pBackground();
 	drawSection();
 	
+	//--------------calculate the normal and x,y for every slot
+	pContourCheck1(0,ofGetHeight());
+	for ( int j=0; j<nAnchors; j++){
+		pContourCheck1(curveAnchorX[j],curveAnchorY[j]);
+	}
+	pContourCheck1(ofGetWidth(),ofGetHeight());
+
+	
+	
 	//update bot positions
 	for ( int i=0; i<number.size(); i++) //for each bot point
 	{
-		bots[i].update();
+			
+		//---------find which slot position for this bot
+		int slotPosition = floor(bots[i].x / slotWidth);
+		if (slotPosition >= 640) slotPosition = 640;
+		if (slotPosition <= 0) slotPosition = 0;
 		
-		// the actual part calculating the normalAngle by the nAnchors next to it
-		if (bots[i].falling == false) 
-		{
-			for (int m = 0; m < nAnchors; m++) 
-			{
-				if (curveAnchorX[m] < bots[i].x && curveAnchorX[m + 1] > bots[i].x) 
-				{
-					bots[i].normalAngle = atan2((curveAnchorY[m+1]-curveAnchorY[m]),(curveAnchorX[m+1]-curveAnchorX[m])) + PI/2.0;
-				}
-			}
-		}
-		
-		//check bots y position to contour
-		bots[i]=pContourCheck(0,ofGetHeight(), bots[i]);
-		for ( int j=0; j<nAnchors; j++){
-			bots[i]=pContourCheck(curveAnchorX[j],curveAnchorY[j], bots[i]);
-		}
-		
-		bots[i]=pContourCheck(ofGetWidth(),ofGetHeight(), bots[i]);
+		bots[i].update(slot[slotPosition]);
 		
 		//alive bots eat food
 		if(bots[i].alive && bots[i].falling==false)
@@ -162,22 +157,23 @@ void testApp::draw(){
 			}
 		}
 		
+		int ang=90;
 		if(bots[i].rightCount>0){
-			if(bots[i].state=="run") runRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
-			else if(bots[i].state=="walk") walkRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
-			else if(bots[i].state=="jog") jogRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
-			else if(bots[i].state=="carryboxjog") carryboxjogRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
-			else if(bots[i].state=="carryboxwalk") carryboxwalkRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			if(bots[i].state=="run") runRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
+			else if(bots[i].state=="walk") walkRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
+			else if(bots[i].state=="jog") jogRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
+			else if(bots[i].state=="carryboxjog") carryboxjogRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
+			else if(bots[i].state=="carryboxwalk") carryboxwalkRight[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+ang) ;
 			
 			drawInfo(bots[i].x-bots[i].size, bots[i].y-bots[i].size*1.5, i);
 		}
 		else{
 			
-			if(bots[i].state=="run") runLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
-			else if(bots[i].state=="walk") walkLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
-			else if(bots[i].state=="jog") jogLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
-			else if(bots[i].state=="carryboxjog") carryboxjogLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
-			else if(bots[i].state=="carryboxwalk") carryboxwalkLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees+90) ;
+			if(bots[i].state=="run") runLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
+			else if(bots[i].state=="walk") walkLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
+			else if(bots[i].state=="jog") jogLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
+			else if(bots[i].state=="carryboxjog") carryboxjogLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
+			else if(bots[i].state=="carryboxwalk") carryboxwalkLeft[bots[i].curImage].draw( bots[i].x-bots[i].size*3.0/5.0, bots[i].y-bots[i].size,bots[i].size,bots[i].size, bots[i].degrees-ang) ;
 			
 			drawInfo(bots[i].x+bots[i].size, bots[i].y-bots[i].size*1.5, i);
 		}
@@ -261,11 +257,10 @@ void testApp::drawSection(){
 
 
 
-
 //---------------------------- and for curve vertexes, since we need 4 to make a curve
 std::vector <double*> pCurveVertices;
 
-Bots  testApp::pContourCheck(float x, float y, Bots b){
+void  testApp::pContourCheck1(float x, float y){
 	double* point = new double[3];
  	point[0] = x;
 	point[1] = y;
@@ -286,16 +281,14 @@ Bots  testApp::pContourCheck(float x, float y, Bots b){
  		float x3 = pCurveVertices[startPos + 3][0];
 	   	float y3 = pCurveVertices[startPos + 3][1];
 		
-		//int resolution = 100; //100 at home//-------this number if gets bigger makes everybody move right wards		
- 		int resolution =220; //iac screen size
-		//int resolution = ofGetWidth() / (nAnchors - 1) / 2;
+ 		//resolution = 70; //-------this number if gets bigger makes everybody move right wards
 		
 		float t,t2,t3;
 		float x,y;
 		
 		for (int i = 0; i < resolution; i++){
 			
-			t 	=  (float)i / (float)(resolution-1);
+			t 	=  (float)i / (float)(resolution-1.0);
 			t2 	= t * t;
 			t3 	= t2 * t;
 			
@@ -304,33 +297,19 @@ Bots  testApp::pContourCheck(float x, float y, Bots b){
 						( 2.0f * x0 - 5.0f * x1 + 4 * x2 - x3 ) * t2 +
 						( -x0 + 3.0f * x1 - 3.0f * x2 + x3 ) * t3 );
 			
-			if (b.x<=x+1 && b.x>=x-1)//----------the reason when resolution gets bigger, everything move right is because they fit in slot and be moved twice
-				//-----------the reason some bots drop to bottom is because they didn't fit into any slot
+			y = 0.5f * ( ( 2.0f * y1 ) +
+						( -y0 + y2 ) * t +
+						( 2.0f * y0 - 5.0f * y1 + 4 * y2 - y3 ) * t2 +
+						( -y0 + 3.0f * y1 - 3.0f * y2 + y3 ) * t3 );
+			
+			int slotNumber = startPos * resolution + i;
+			slot[slotNumber][0] = x;
+			slot[slotNumber][1] = y;
+			if ( slotNumber == 0) 
 			{
-			    y = 0.5f * ( ( 2.0f * y1 ) +
-							( -y0 + y2 ) * t +
-							( 2.0f * y0 - 5.0f * y1 + 4 * y2 - y3 ) * t2 +
-							( -y0 + 3.0f * y1 - 3.0f * y2 + y3 ) * t3 );
-				
-				//float bottomX=b.x+cos(b.normalAngle+PI)*b.size;
-				//float bottomY=b.y+sin(b.normalAngle+PI)*b.size;
-				if (b.y>=y-5+b.nFeetUnder || b.graveBound)
-				{
-					//-----rots should not move
-					//float dx=b.x-x;
-					float dx=0;
-					if (b.alive) dx=b.x-x;
-					
-					float dy=b.y-y-b.nFeetUnder;
-					
-					b.shiftPos(dx,dy);
-					b.fallingSetFalse();
-				}
-				else if (b.downhill == true) //------------only downwards can falling //if(b.y<y-5)
-				{
-					b.fallingSetTrue();
-				}
-			}
+				slot[slotNumber][2] = PI;
+		    }   else  {slot[slotNumber][2] = atan2((slot[slotNumber - 1][1] - slot[slotNumber][1]), (slot[slotNumber - 1][0] - slot[slotNumber][0]));}
+			
 		}
  	}
 	//-----------------------clean the cache 
@@ -338,9 +317,9 @@ Bots  testApp::pContourCheck(float x, float y, Bots b){
 	{
 		pCurveVertices.clear();
 	}
-	
-	return  b;
 }
+
+
 
 
 void testApp::pBackground()
