@@ -75,7 +75,7 @@ public:
 	float degrees;
 	float framesPerStep;
 	string state;
-	
+	int lastFrame;
 
 	
 	
